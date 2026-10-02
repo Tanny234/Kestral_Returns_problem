@@ -1,0 +1,16 @@
+# CONFIDENTIAL: Kestrel customer/operational data must never be committed (ops-policy section 10)
+data/
+app/ref/
+*.csv
+app/model.joblib
+*.joblib
+# client pack documents and recording
+ops-policy.pdf
+email-thread.txt
+README.txt
+# local environment
+.venv/
+__pycache__/
+out/
+# predictions.csv is covered by *.csv above: submit it through the official channel, or remove that
+# exception deliberately only if the submission instructions require it in a PRIVATE repo.

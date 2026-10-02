@@ -1,0 +1,39 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kestrel Returns Risk</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--ink:#1d2b2a;--mute:#6b7775;--line:#dcdad3;--acc:#0f5c55;--hi:#b3261e;--mid:#b26a00;--ok:#2e7d32}
+@media (prefers-color-scheme:dark){:root{--bg:#141817;--card:#1d2321;--ink:#e8eeec;--mute:#93a09d;--line:#2f3836;--acc:#5cc2b6;--hi:#ff8a80;--mid:#ffc060;--ok:#8fd694}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,sans-serif}
+main{max-width:960px;margin:0 auto;padding:20px 16px}h1{font-size:20px;margin:0 0 4px}p.sub{color:var(--mute);margin:0 0 16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+label{display:block;font-size:12px;color:var(--mute);margin:10px 0 2px}input,select{width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}button{margin-top:14px;width:100%;padding:10px;border:0;border-radius:6px;background:var(--acc);color:var(--bg);font:600 15px system-ui;cursor:pointer}
+.big{font-size:40px;font-weight:700;line-height:1}.band{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid currentColor}
+.high{color:var(--hi)}.elevated{color:var(--mid)}.normal{color:var(--ok)}ul{padding-left:18px;margin:6px 0}.mute{color:var(--mute);font-size:13px}.err{color:var(--hi)}
+</style></head><body><main>
+<h1>Kestrel Returns Risk</h1><p class="sub">Enter an order as it looks at dispatch. The tool suggests whether to phone the customer first. It never suggests holding the order.</p>
+<div class="grid"><form class="card" id="f">
+<div class="row"><div><label>Order placed (IST)</label><input name="order_placed_at" value="2026-10-02 14:30"></div><div><label>Customer ID</label><input name="customer_id" value="KC105196"></div></div>
+<div class="row"><div><label>Product code</label><input name="sku" value="KH-RV-02"></div><div><label>Quantity</label><input name="qty" type="number" value="1" min="1"></div></div>
+<div class="row"><div><label>Sales channel</label><select name="sales_channel"><option>app</option><option>web</option><option selected>marketplace</option><option>partner_outlet</option></select></div>
+<div><label>Payment</label><select name="payment_mode"><option>prepaid_upi</option><option>prepaid_card</option><option selected>cod</option><option>emi</option></select></div></div>
+<div class="row"><div><label>Discount %</label><input name="discount_pct" type="number" value="22"></div><div><label>Promised delivery (days)</label><input name="promised_delivery_days" type="number" value="8"></div></div>
+<div class="row"><div><label>Customer's past orders</label><input name="customer_prior_orders" type="number" value="4"></div><div><label>Customer's past returns</label><input name="customer_prior_returns" type="number" value="2"></div></div>
+<div class="row"><div><label>Gift?</label><select name="is_gift"><option>N</option><option>Y</option></select></div><div><label>Pincode (0 if none)</label><input name="delivery_pincode" type="number" value="560001"></div></div>
+<button type="submit">Check this order</button></form>
+<div class="card" id="out"><p class="mute">The result will appear here.</p></div></div></main>
+<script>
+const f=document.getElementById('f'),out=document.getElementById('out');
+f.addEventListener('submit',async e=>{e.preventDefault();out.innerHTML='<p class="mute">Checking...</p>';
+ const d=Object.fromEntries(new FormData(f));for(const k of ['qty','discount_pct','promised_delivery_days','customer_prior_orders','customer_prior_returns','delivery_pincode'])d[k]=Number(d[k]);
+ try{const r=await fetch('/score',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});const j=await r.json();
+  if(!r.ok||!j.ok){out.innerHTML='<p class="err">'+(j.error||JSON.stringify(j.detail||j))+'</p>';return}
+  const li=a=>a.length?'<ul>'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul>':'<p class="mute">None notable.</p>';
+  out.innerHTML=`<div class="big ${j.risk_band}">${(j.return_probability*100).toFixed(0)}%</div><p class="mute">estimated chance this order is returned (typical order: about 11%)</p>
+  <span class="band ${j.risk_band}">${j.risk_band} risk</span><p><b>${j.recommended_action}</b></p>
+  <p class="mute">Expected value of a Rs 45 call on this order: Rs ${j.expected_net_value_of_call_inr}</p>
+  <p><b>Pushing risk up</b></p>${li(j.reasons_up)}<p><b>Pushing risk down</b></p>${li(j.reasons_down)}
+  <p class="mute">${j.notes.join(' ')}</p>`;
+ }catch(err){out.innerHTML='<p class="err">Could not reach the service. Is it running?</p>'}});
+</script></body></html>
