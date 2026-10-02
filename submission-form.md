@@ -1,4 +1,4 @@
-# Submission form (DRAFT - the original submission-form.md was not in the pack; fields below follow the brief. Please copy into the official template.)
+# Submission form 
 
 **Candidate:** Jyotishka A Badiger  **Date:** 2 Oct 2026
 
