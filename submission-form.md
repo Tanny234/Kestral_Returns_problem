@@ -39,7 +39,7 @@ Rs 0. It runs locally with no external API.
 Run README steps, start the service, and begin calling flagged orders at risk 0.15 or higher, keeping a random quarter of them uncalled. After 4-6 weeks compare return rates to replace the 35% assumption with a real number, then revisit the cut-off.
 
 ## What is in the pack
-predictions.csv (sent through the submission channel, not in the repo), app/ (service + screen), README.md, EVIDENCE.md, DECISIONS.md, MEMO_to_Ritu.md, code to reproduce. Screen recording (about 3:00) submitted separately. It does not show an unknown customer ID; the app handles that case by scoring them as a new customer, as described in the README.
+predictions.csv (in the repo root, and also attached to the task email sent to me), README.md, EVIDENCE.md, DECISIONS.md, MEMO_to_Ritu.md, code to reproduce. Screen recording (about 3:00) submitted separately. It does not show an unknown customer ID; the app handles that case by scoring them as a new customer, as described in the README.
 
 ## AI tools: what I used / what it cost / what I discarded
 - Used: Claude (chat + coding tools in claude.ai) for data exploration, modelling code, the service and documents. Free plan; cost Rs 0.
