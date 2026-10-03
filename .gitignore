@@ -12,5 +12,5 @@ README.txt
 .venv/
 __pycache__/
 out/
-# predictions.csv is covered by *.csv above: submit it through the official channel, or remove that
-# exception deliberately only if the submission instructions require it in a PRIVATE repo.
+# predictions.csv is ignored by *.csv above, so it was added deliberately with "git add -f":
+# it contains only order IDs and scores (no customer details).
