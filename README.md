@@ -46,4 +46,4 @@ API: `POST /score` (JSON order, see `app/main.py`), `GET /health`.
 reproduce every number in EVIDENCE.md. Design decisions are in DECISIONS.md and the plain-language
 recommendation for Ritu is in MEMO_to_Ritu.md.
 
-Do not publish or share this folder or the data beyond the engagement team.
+Note: Kestrel's data is confidential (ops-policy section 10). Do not publish it or share it beyond the engagement team.
